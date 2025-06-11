@@ -195,33 +195,31 @@ private:
 
     //右上是零点,向左x递增向下y递增,y轴的负方向上yaw=0
     // yaw 逆时针为正,angle 顺时针为正
-    /**
-    <---*----------
-     | /\ |       |
-     |/__\|       |
+    /*
+    x<----------------------------
+                  |
+                  |
                   |
                   |
                   |
                   ↓
-     */
-
+                 y
+    */
     double angle =
         std::atan2((pose_.position.x - basket_vec_.x()), pose_.position.y);
     ROBOT_INFO_F("desire yaw: %f ; current yaw: %f ; robot turn %s", angle, y,
-                 angle > y ? "right" : "left");
+                 angle+y > 0 ? "left" : "right");
     double delta_angle;
 
     desired_angle_ = angle;////an
 
 
     if(angle>0 && y>0){
-      //顺时针  负方向转
       delta_angle=(M_PI-angle-y)* 180.0 / M_PI;//逆时针
     }
     else if(angle<0 && y<0)
     {
       delta_angle=(M_PI+angle+y)* 180.0 / M_PI;//顺时针
-        //逆时针  正方向转
     }
     else if(y>0)
     {
@@ -231,8 +229,6 @@ private:
       }else{
         delta_angle=(M_PI+angle+y)* 180.0 / M_PI;//顺时针
       }
-        //都在左边 angle>0
-        //y+angle>0;//顺时针
     }
     else
     { 
@@ -240,10 +236,8 @@ private:
       {
         delta_angle=(M_PI+angle+y)* 180.0 / M_PI;//顺时针
       }else{
-          delta_angle=(M_PI-angle-y)* 180.0 / M_PI;//逆时针
+        delta_angle=(M_PI-angle-y)* 180.0 / M_PI;//逆时针
       }
-       //都在右边  y<0
-       //angle+y<0;//逆时针
     }
 
     // TODO
